@@ -15,7 +15,6 @@
 
 from __future__ import absolute_import
 from __future__ import division
-
 from __future__ import print_function
 
 import abc
@@ -177,6 +176,7 @@ class Delegate(DockerImage):
     Args:
       image: a DockerImage on which __enter__ has already been called.
     """
+    super().__init__()
     self._image = image
 
   def manifest(self):
@@ -240,6 +240,7 @@ class FromRegistry(DockerImage):
                basic_creds,
                transport,
                accepted_mimes = docker_http.MANIFEST_SCHEMA2_MIMES):
+    super().__init__()
     self._name = name
     self._creds = basic_creds
     self._original_transport = transport
@@ -300,6 +301,12 @@ class FromRegistry(DockerImage):
       if err.status == six.moves.http_client.NOT_FOUND:
         return False
       raise
+
+  def digest(self):
+    """The digest of the manifest."""
+    if isinstance(self._name, docker_name.Digest):
+      return self._name.digest
+    return super().digest()
 
   def manifest(self, validate=True):
     """Override."""
@@ -415,6 +422,7 @@ class FromTarball(DockerImage):
       name = None,
       compresslevel = 9,
   ):
+    super().__init__()
     self._tarball = tarball
     self._compresslevel = compresslevel
     self._memoize = {}
@@ -670,6 +678,7 @@ class FromDisk(DockerImage):
                uncompressed_layers = None,
                legacy_base = None,
                foreign_layers_manifest = None):
+    super().__init__()
     self._config = config_file
     self._manifest = None
     self._foreign_layers_manifest = foreign_layers_manifest

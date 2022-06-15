@@ -15,7 +15,6 @@
 
 from __future__ import absolute_import
 from __future__ import division
-
 from __future__ import print_function
 
 import errno
@@ -141,10 +140,12 @@ def tarball(name, image,
   multi_image_tarball({name: image}, tar, {})
 
 
-def fast(image,
-         directory,
-         threads = 1,
-         cache_directory = None):
+def fast(
+    image,
+    directory,
+    threads = 1,
+    cache_directory = None
+):
   """Produce a FromDisk compatible file layout under the provided directory.
 
   After calling this, the following filesystem will exist:
